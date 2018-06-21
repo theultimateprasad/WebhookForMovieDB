@@ -17,7 +17,7 @@ server.post('/get-sensor-values', (req, res) => {
     var device = req.body.result && req.body.result.parameters && req.body.result.parameters.Device ? req.body.result.parameters.Device :''; // ? req.body.queryResult.parameters.Device : 'ceiling fan';
     var state =  req.body.result && req.body.result.parameters && req.body.result.parameters.state ? req.body.result.parameters.state : '';
     var location =  req.body.result && req.body.result.parameters && req.body.result.parameters.location ? req.body.result.parameters.location : '';
-    var percentage = req.body.result && req.body.result.parameters && req.body.result.parameters.number ? req.body.result.parameters.number : '';
+    //var percentage = req.body.result && req.body.result.parameters && req.body.result.parameters.number ? req.body.result.parameters.number : '';
     
 
     //********** Get the Sensor Value */
@@ -40,32 +40,45 @@ server.post('/get-sensor-values', (req, res) => {
 
 
     //************* Device Selector
-    if (device =='ceiling fan' && location == 'one'){
-        virtualVar = 'V3';
-    }
-    else if (device =='ceiling fan' && location == 'two'){
-        virtualVar = 'V9';
-    }
-    else if (device =='light' && location == 'one'){
-        virtualVar = 'V1';
-    }
-    else if (device =='light' && location == 'two'){
+    if (device =='ceiling fan' && location == 'Jain University'){
         virtualVar = 'V2';
     }
-    else if (device =='led' && !percentage == ''){
-        virtualVar = 'V4';
-    }
-    else if (sensor =='Temperature' && location == 'one'){
+    else if (device =='ceiling fan' && location == 'Nagpur University'){
         virtualVar = 'V5';
     }
-    else if (sensor =='Temperature' && location == 'two'){
-        virtualVar = 'V6';
+    if (device =='ceiling fan' && location == 'Poornima University'){
+        virtualVar = 'V8';
     }
-    else if (sensor =='Humidity' && location == 'one'){
+    else if (device =='light' && location == 'Jain University'){
+        virtualVar = 'V1';
+    }
+    else if (device =='light' && location == 'Nagpur University'){
+        virtualVar = 'V4';
+    }
+    else if (device =='light' && location == 'Poornima University'){
         virtualVar = 'V7';
     }
-    else if (sensor =='Humidity' && location == 'two'){
-        virtualVar = 'V8';
+    /*else if (device =='led' && !percentage == ''){
+        virtualVar = 'V4';
+    } */
+    else if (sensor =='Temperature' && location == 'Jain University'){
+        virtualVar = 'V3';
+    }
+    else if (sensor =='Temperature' && location == 'Nagpur University'){
+        virtualVar = 'V6';
+    }
+    else if (sensor =='Temperature' && location == 'Poornima University'){
+        virtualVar = 'V9';
+    }
+
+    else if (sensor =='Humidity' && location == 'Jain University'){
+        virtualVar = 'V11';
+    }
+    else if (sensor =='Humidity' && location == 'Nagpur University'){
+        virtualVar = 'V12';
+    }
+    else if (sensor =='Humidity' && location == 'Poornima University'){
+        virtualVar = 'V10';
     }
 
     //State of the Device Selector 
@@ -77,19 +90,19 @@ server.post('/get-sensor-values', (req, res) => {
     }
 
     //************New state of device for difference in digital & Analog Control */
-
+/*
     if (stateOfDevice !=''){
         newstate = stateOfDevice;
     }
     else{
         newstate = percentage; 
     }
-    
+    */
    // ******* URL to GET The Data from the Ubidots ******************
    //const reqUrl = encodeURI(`http://50.23.124.68/api/v1.6/devices/Demo/${sensor}/values?token=A1E-oxPfX1l1rtkLc29tPMW6UoqpwzoTVI`);
    //**************** URL to get & send the Data from Blynk */
-   const sensorUrl = encodeURI(`http://188.166.206.43/04ee22318acd49c3a067ed9b866d735e/get/${virtualVar}`);
-   const controlUrl = encodeURI(`http://188.166.206.43/04ee22318acd49c3a067ed9b866d735e/update/${virtualVar}?value=${newstate}`);
+   const sensorUrl = encodeURI(`http://188.166.206.43/c83cd1d24f1b4a5a9365d4b8d79468aa/get/${virtualVar}`);
+   const controlUrl = encodeURI(`http://188.166.206.43/c83cd1d24f1b4a5a9365d4b8d79468aa/update/${virtualVar}?value=${stateOfDevice}`);
    
    //****************Selection of URL for control & Monitor */
    if(sensor !=''){
@@ -112,12 +125,13 @@ server.post('/get-sensor-values', (req, res) => {
 
            
            let dataToSend = '';
-           if(reqUrl == controlUrl && newstate == stateOfDevice){
-            dataToSend += `${device} is turned ${state} at location ${location}. Thank You`;  
+           if(reqUrl == controlUrl){
+            dataToSend += `${device} is turned ${state} at ${location}. Thank You`;  
            }
+           /*
            else if(reqUrl == controlUrl && newstate == percentage){
             dataToSend += `Intensity of ${device} is turned to ${newstate} %. Thank You`;  
-           }
+           } */
            else if(reqUrl == sensorUrl){
             //*********Parsing for the Ubidots */
             //console.log('Sensor Value is = '+JSON.stringify(sensValue.queryResults[0].value));
