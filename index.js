@@ -192,7 +192,7 @@ server.post('/get-sensor-values', (req, res) => {
 
 function getWish(){
     var myDate = new Date();
-    var hours = myDate.getUTCHours()-8;
+    var hours = myDate.getUTCHours()+5.3;
     if(hours<0){
         hours = hours + 24;
     }
