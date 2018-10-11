@@ -58,7 +58,7 @@ server.post('/get-sensor-values', (req, res) => {
         virtualVar = 'V4';
     } */
     else if (sensor =='Temperature' ){
-        virtualVar = 'V10';
+        virtualVar = 'V16';
     }
     else if (sensor =='Humidity' ){
         virtualVar = 'V12';
